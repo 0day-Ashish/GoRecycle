@@ -23,6 +23,8 @@
 #env file
 .env.local
 
+/ingest.js
+
 # misc
 .DS_Store
 *.pem
