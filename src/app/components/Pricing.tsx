@@ -1,6 +1,17 @@
 "use client";
 
+import { useState } from "react";
+
 export default function Pricing() {
+  const [yearly, setYearly] = useState(false);
+
+  // price values for monthly and yearly billing
+  const prices = {
+    free: { label: "Free", display: "Free" },
+    standard: yearly ? { label: "$99.99", display: "$99.99", period: "/yr" } : { label: "$9.99", display: "$9.99", period: "/m" },
+    pro: yearly ? { label: "$199.99", display: "$199.99", period: "/yr" } : { label: "$19.99", display: "$19.99", period: "/m" },
+  };
+
   return (
     <section className="w-full flex flex-col items-center justify-center py-20 bg-black text-white">
       <h2 className="text-5xl font-bold mb-14">Pricing</h2>
@@ -9,7 +20,7 @@ export default function Pricing() {
         <div className="flex flex-col justify-between bg-black/50 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-xl flex-1">
           <div>
             <h3 className="text-xl font-medium mb-2">Free Plan</h3>
-            <p className="text-4xl font-bold">Free</p>
+            <p className="text-4xl font-bold">{prices.free.display}</p>
             <ul className="mt-6 space-y-3 text-gray-300">
               <li>✔ Send up to 2 transfers per month</li>
               <li>✔ Basic transaction history</li>
@@ -27,7 +38,10 @@ export default function Pricing() {
         <div className="flex flex-col justify-between bg-black/60 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl scale-105 flex-1">
           <div>
             <h3 className="text-xl font-medium mb-2">Standard Plan</h3>
-            <p className="text-4xl font-bold">$9.99<span className="text-lg font-normal">/m</span></p>
+            <p className="text-4xl font-bold">
+              {prices.standard.display}
+              <span className="text-lg font-normal">{prices.standard.period}</span>
+            </p>
             <ul className="mt-6 space-y-3 text-gray-300">
               <li>✔ Unlimited transfers</li>
               <li>✔ Transaction history with export</li>
@@ -45,7 +59,10 @@ export default function Pricing() {
         <div className="flex flex-col justify-between bg-black/50 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-xl flex-1">
           <div>
             <h3 className="text-xl font-medium mb-2">Pro Plan</h3>
-            <p className="text-4xl font-bold">$19.99<span className="text-lg font-normal">/m</span></p>
+            <p className="text-4xl font-bold">
+              {prices.pro.display}
+              <span className="text-lg font-normal">{prices.pro.period}</span>
+            </p>
             <ul className="mt-6 space-y-3 text-gray-300">
               <li>✔ Unlimited transfers with priority</li>
               <li>✔ Comprehensive analytics</li>
@@ -62,10 +79,16 @@ export default function Pricing() {
 
       {/* Billing toggle */}
       <div className="mt-10 flex items-center gap-3 text-gray-400">
-        <div className="w-10 h-6 rounded-full bg-gray-700 flex items-center p-1">
-          <div className="w-4 h-4 rounded-full bg-white"></div>
-        </div>
-        <span>Billed Yearly</span>
+        <button
+          aria-pressed={yearly}
+          onClick={() => setYearly((v) => !v)}
+          className={`w-16 h-8 rounded-full p-1 flex items-center transition-colors ${yearly ? "bg-green-500" : "bg-gray-700"}`}
+        >
+          <div
+            className={`w-6 h-6 rounded-full bg-white transform transition-transform ${yearly ? "translate-x-8" : "translate-x-0"}`}
+          ></div>
+        </button>
+        <span>{yearly ? "Billed Yearly" : "Billed Monthly"}</span>
       </div>
     </section>
   );

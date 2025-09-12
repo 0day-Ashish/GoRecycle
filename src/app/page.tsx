@@ -13,6 +13,65 @@ import LogoLoop from "./components/LogoLoop";
 import Credentials from "./components/Credentials";
 import { ChatbotWidget }  from "./components/ChatBot";
 
+function TopProgress() {
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const doc = document.documentElement;
+
+    const update = () => {
+      const scrollTop = window.pageYOffset || doc.scrollTop || 0;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const progress = max > 0 ? (scrollTop / max) * 100 : 0;
+      if (barRef.current) {
+        // set width so the bar grows left-to-right
+        barRef.current.style.width = `${progress}%`;
+      }
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    rafRef.current = requestAnimationFrame(update);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="fixed top-0 left-0 right-0 pointer-events-none z-[9999]"
+      style={{ height: 4 }}
+    >
+      <div
+        ref={barRef}
+        className="h-full bg-[#4025aa] transition-[width] duration-100 ease-linear"
+        style={{ width: "0%" }}
+      />
+    </div>
+  );
+} 
+
+function useInView(options?: IntersectionObserverInit) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect(); // animate only once
+      }
+    }, options);
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, [options]);
+
+  return { ref, isVisible };
+}
+
 export default function Home() {
   useLenis({ lerp: 0.07 });
   const [navOpen, setNavOpen] = useState(false);
@@ -25,7 +84,14 @@ export default function Home() {
     { src: "/dell.png", alt: "Company 4" },
     { src: "/rbi.png", alt: "Company 5" },
     { src: "/Sims.png", alt: "Company 6" },
-    { src: "/rbi.png", alt: "Company 7" },
+    { src: "/oracle.png", alt: "Company 7" },
+  ];
+
+  const sndLoops = [
+    { src: "/scdbank.png", alt: "Company 1" },
+    { src: "/siemens.png", alt: "Company 2" },
+    
+    { src: "/ericsson.png", alt: "Company 4" },
   ];
 
   useEffect(() => {
@@ -49,8 +115,20 @@ export default function Home() {
     }
   }, []);
 
+  
+
+const { ref: missionRef, isVisible: missionVisible } = useInView({ threshold: 0.2 });
+const { ref: credsRef, isVisible: credsVisible } = useInView({ threshold: 0.2 });
+const { ref: pricingRef, isVisible: pricingVisible } = useInView({ threshold: 0.2 });
+const { ref: usersRef, isVisible: usersVisible } = useInView({ threshold: 0.2 });
+const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ threshold: 0.2 });
+
+
   return (
+    
     <>
+    
+      <TopProgress />
       <div className="min-h-screen w-full bg-black">
         <main className="relative z-10">
           {/* Animated Infobar */}
@@ -72,7 +150,7 @@ export default function Home() {
                 height={40}
                 className="mr-3 rounded-full"
               />
-              <a href="/"><span className="italic">Go</span>Recycle</a>
+              <Link href="/">Leth<span className="italic">e</span></Link>
             </span>
             {/* Hamburger for small screens */}
             <button
@@ -86,7 +164,7 @@ export default function Home() {
             </button>
             {/* Navbar links for desktop */}
             <div className="hidden md:flex items-center gap-6 pr-20 relative">
-              <a href="#" className="text-white hover:text-indigo-400 transition"></a>
+              <Link href="#" className="text-white hover:text-indigo-400 transition"></Link>
               {/* Dropdown for Services */}
               <div className="relative group">
                 <button
@@ -98,16 +176,59 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className="absolute left-0 mt-2 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50">
-                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</a>
-                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</a>
-                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</a>
+                {/* Adjusted positioning: anchor directly below the button to avoid hover gaps */}
+                <div className="absolute left-0 top-full mt-0 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50 transform translate-y-1">
+                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</Link>
+                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</Link>
+                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</Link>
                 </div>
               </div>
-              <a href="#" className="text-white hover:text-indigo-400 transition">Partners</a>
-              <a href="#" className="text-white hover:text-indigo-400 transition">Blog</a>
-              <a href="#" className="text-white hover:text-indigo-400 transition">Docs</a>
-              <a href="#" className="text-white hover:text-indigo-400 transition">Contact</a>
+              <div className="relative group text-white hover:text-indigo-400 transition">
+                <button
+                  className="text-white hover:text-indigo-400 transition flex items-center focus:outline-none"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  tabIndex={0}
+                >
+                  Partners
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Dropdown content (still uses Link for anchor items) */}
+                <div className="absolute left-0 top-full mt-0 w-[420px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50 p-6 grid grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">Why partner with us</h4>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">
+                      Partner Ecosystem
+                    </Link>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">Alliance Partners</h4>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Technology Alliance</Link>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">Become a Partner</h4>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Global Partner Program</Link>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">ITAD Program</Link>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Mobile Processors</Link>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">Already a partner?</h4>
+                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Login Portal</Link>
+                  </div>
+                </div>
+              </div>
+              <Link href="#" className="text-white hover:text-indigo-400 transition">Blog</Link>
+              <Link href="/Doc" className="text-white hover:text-indigo-400 transition">Docs</Link>
+              <Link href="#" className="text-white hover:text-indigo-400 transition">Contact</Link>
               <Link
                 href="/download"
                 className="ml-4 bg-[#4025aa] text-white font-semibold px-5 py-2 rounded transition"
@@ -133,16 +254,16 @@ export default function Home() {
                     </button>
                     {mobileServicesOpen && (
                       <div className="mt-2 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg">
-                        <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</a>
-                        <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</a>
-                        <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</a>
+                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</Link>
+                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</Link>
+                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</Link>
                       </div>
                     )}
                   </div>
-                  <a href="#" className="text-white hover:text-indigo-400 transition">Partners</a>
-                  <a href="#" className="text-white hover:text-indigo-400 transition">Blog</a>
-                  <a href="#" className="text-white hover:text-indigo-400 transition">Docs</a>
-                  <a href="#" className="text-white hover:text-indigo-400 transition">Contact</a>
+                  <Link href="#" className="text-white hover:text-indigo-400 transition">Partners</Link>
+                  <Link href="#" className="text-white hover:text-indigo-400 transition">Blog</Link>
+                  <Link href="#" className="text-white hover:text-indigo-400 transition">Docs</Link>
+                  <Link href="#" className="text-white hover:text-indigo-400 transition">Contact</Link>
                   <Link
                     href="/download"
                     className="bg-[#4025aa] text-white font-semibold px-5 py-2 rounded transition mt-2"
@@ -175,34 +296,37 @@ export default function Home() {
                 className="h-[40rem] text-white dark:text-black"
               >
                 Discover the power of{" "}
-                <span className="text-[#4025aa]">Data Wiping</span> with native CSS
-                variables and container queries with
+                <span className="text-[#4025aa]">Data Wiping</span> fortified by military-grade encryption
                 <span className="text-[#4025aa]"> advanced architectures</span>.
               </MaskContainer>
             </div>
           </div>
           {/* About Section */}
-          <section className="w-full max-w-5xl mx-auto mt-20 px-8 py-12 bg-black/80 rounded-2xl shadow-lg flex-col md:flex-row gap-8 transition-opacit">
+          <section
+  ref={missionRef}
+  className={`w-full max-w-5xl mx-auto mt-20 px-8 py-12 bg-black/80 rounded-2xl shadow-lg flex-col md:flex-row gap-8 transition-all duration-1000 ease-out
+  ${missionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+>
             <div className="flex-1">
               <h2 className="text-5xl italic font-bold text-white mb-4">Mission</h2>
               <p className="text-lg text-gray-200 mb-2">
-                GoRecycle's mission is to make secure, transparent, and eco-friendly data wiping accessible to everyone. We empower individuals, organizations, and recyclers with a simple, one-click solution that permanently erases sensitive data, generates tamper-proof proof-of-erasure certificates, and supports responsible IT asset recycling. By combining strong cryptography with user-friendly design, we aim to build trust, prevent data misuse, and accelerate a sustainable circular economy.
+                Lethe's mission is to make secure, transparent, and eco-friendly data wiping accessible to everyone. We empower individuals, organizations, and recyclers with a simple, one-click solution that permanently erases sensitive data, generates tamper-proof proof-of-erasure certificates, and supports responsible IT asset recycling. By combining strong cryptography with user-friendly design, we aim to build trust, prevent data misuse, and accelerate a sustainable circular economy.
               </p>
               <p className="text-md text-gray-400">
                 Clean drives, fresh starts — because every byte deserves a second life.
               </p>
-              <a
+              <Link
                 href="#"
                 className="inline-block mt-6 text-indigo-400 hover:underline text-lg font-medium"
               >
                 Our Solution →
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="inline-block mt-6 ml-9 text-indigo-400 hover:underline text-lg font-medium"
               >
                 Learn more →
-              </a>
+              </Link>
             </div>
             <div className="flex-shrink-0 flex items-end justify-end">
               <Image
@@ -215,14 +339,25 @@ export default function Home() {
             </div>
           </section>
           {/* Credentials Section */}
-          <section className="w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end">
+          <section
+            ref={credsRef}
+            className={`w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end transition-all duration-1000 ease-out
+            ${credsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          >
             <Credentials />
           </section>
           {/* Plans Section */}
-          <section className="w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end">
+          <section 
+            ref={pricingRef}
+            className={`w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end transition-all duration-1000 ease-out
+            ${pricingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
             <Pricing />
           </section>
-          <section className="w-full max-w-7xl mx-auto mb-34 px-8 flex flex-col items-end">
+          <section 
+            ref={usersRef}
+            className={`w-full max-w-7xl mx-auto mb-34 px-8 flex flex-col items-end transition-all duration-1000 ease-out
+            ${usersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          >
             <h2 className="text-5xl font-bold text-white mb-30">
               Trusted <span className="italic">Users</span>
             </h2>
@@ -238,11 +373,28 @@ export default function Home() {
               fadeOutColor="black"
               ariaLabel="Technology partners"
             />
+            <div className="h-20" /> {/* Spacer */}
+            <LogoLoop
+              logos={sndLoops}
+              speed={120}
+              direction="right"
+              logoHeight={98}
+              gap={120}
+              pauseOnHover={false}
+              scaleOnHover={false}
+              fadeOut={true}
+              fadeOutColor="black"
+              ariaLabel="Technology partners"
+            />
           </section>
           {/* USP Section */}
-          <section className="w-full max-w-5xl mx-auto mt-34 mb-24 px-8 flex flex-col items-start">
-            <h2 className="text-5xl font-bold text-white italic mb-8 ml-0">
-              Features <span className="italic">we</span> offer
+          <section 
+            ref={transparencyRef}
+            className={`w-full max-w-5xl mx-auto mt-34 mb-24 px-8 flex flex-col items-start transition-all duration-1000 ease-out
+            ${transparencyVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            >
+            <h2 className="text-5xl font-bold text-white mb-8 ml-0">
+              Transparency
             </h2>
             <div className="flex justify-center items-center w-full">
               <MagicBento
@@ -266,7 +418,7 @@ export default function Home() {
     </>
   );
 }
-           
+
 
 
 

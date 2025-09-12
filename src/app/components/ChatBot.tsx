@@ -45,7 +45,7 @@ export function ChatbotWidget() {
             <svg width={28} height={28} fill="none" stroke="currentColor" strokeWidth={2}>
               <circle cx="14" cy="14" r="12" stroke="#fff" strokeWidth="2" fill="#4025aa" />
               <path d="M9 14h6M9 18h4" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="11" cy="11" r="1" fill="#fff" />
+              <circle cx="11" cy="11" r="1" fill="#fff"/>
             </svg>
           </button>
         </div>
