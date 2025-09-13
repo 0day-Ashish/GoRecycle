@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GoRecycle",
+  title: "Lethe - A Modern Data-Wiping Solution",
   description: "Developed w 🤍 by Team 0day",
 };
 

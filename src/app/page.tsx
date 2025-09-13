@@ -12,6 +12,8 @@ import Pricing from "./components/Pricing";
 import LogoLoop from "./components/LogoLoop";
 import Credentials from "./components/Credentials";
 import { ChatbotWidget }  from "./components/ChatBot";
+import { MdEmail, MdShare } from "react-icons/md";
+import { FaFacebookF, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
 function TopProgress() {
   const barRef = useRef<HTMLDivElement | null>(null);
@@ -72,7 +74,56 @@ function useInView(options?: IntersectionObserverInit) {
   return { ref, isVisible };
 }
 
+function ShareSidebar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50">
+      {/* Sidebar container */}
+      <div
+        className={`bg-white rounded-l-xl shadow-lg transition-all duration-300 ease-in-out ${
+          open ? "w-24" : "w-10"
+        }`}
+      >
+        {/* Toggle button */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-12 h-30 flex items-center justify-center bg-white rounded-l-xl"
+        >
+          <div className="flex flex-col gap-3 items-center justify-center">
+            <MdShare className="text-blue-600 text-xl mb-1" />
+            <span className="text-blue-600 font-semibold text-sm rotate-90">
+              Share
+            </span>
+          </div>
+        </button>
+
+        {/* Social Icons */}
+        {open && (
+          <div className="flex flex-col items-center gap-4 py-6 transition-opacity duration-300">
+            <a href="mailto:?subject=Check this out!" target="_blank">
+              <MdEmail className="text-blue-600 text-xl hover:scale-110 transition" />
+            </a>
+            <a href="https://facebook.com" target="_blank">
+              <FaFacebookF className="text-blue-600 text-xl hover:scale-110 transition" />
+            </a>
+            <a href="https://linkedin.com" target="_blank">
+              <FaLinkedinIn className="text-blue-600 text-xl hover:scale-110 transition" />
+            </a>
+            <a href="https://twitter.com" target="_blank">
+              <FaXTwitter className="text-blue-600 text-xl hover:scale-110 transition" />
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
+
+   const [open, setOpen] = useState(false);
+
   useLenis({ lerp: 0.07 });
   const [navOpen, setNavOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -125,12 +176,11 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
 
 
   return (
-    
     <>
-    
       <TopProgress />
       <div className="min-h-screen w-full bg-black">
         <main className="relative z-10">
+         
           {/* Animated Infobar */}
           <div className="w-full bg-[#4025aa] text-white text-center text-sm py-3 overflow-hidden">
             <p className="animate-marquee whitespace-nowrap">
@@ -142,7 +192,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
           </div>
           {/* Navbar */}
           <nav className="sticky top-0 w-full bg-black/80 border-b border-white/10 px-8 py-4 flex items-center justify-between z-50 backdrop-blur">
-            <span className="flex items-center text-white font-bold text-3xl pl-15">
+            <span className="flex items-center text-white font-bold text-4xl pl-15">
               <Image
                 src="/logo.png"
                 alt="GoRecycle Logo"
@@ -262,7 +312,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                   </div>
                   <Link href="#" className="text-white hover:text-indigo-400 transition">Partners</Link>
                   <Link href="#" className="text-white hover:text-indigo-400 transition">Blog</Link>
-                  <Link href="#" className="text-white hover:text-indigo-400 transition">Docs</Link>
+                  <Link href="/Doc" className="text-white hover:text-indigo-400 transition">Docs</Link>
                   <Link href="#" className="text-white hover:text-indigo-400 transition">Contact</Link>
                   <Link
                     href="/download"
@@ -286,7 +336,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                 playsInline
               />
             </div>
-            <div className="hidden md:flex h-[40rem] w-full flex-col items-centre justify-centre overflow-hidden cursor-none">
+             <div className="hidden md:flex h-[40rem] w-full flex-col items-centre justify-centre overflow-hidden cursor-none">
               <MaskContainer
                 revealText={
                   <p className="mx-auto max-w-4xl text-center text-4xl font-bold text-slate-800 dark:text-white bg-transparent">
@@ -296,7 +346,8 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                 className="h-[40rem] text-white dark:text-black"
               >
                 Discover the power of{" "}
-                <span className="text-[#4025aa]">Data Wiping</span> fortified by military-grade encryption
+                <span className="text-[#4025aa]">Data Wiping</span> with native CSS
+                variables and container queries with
                 <span className="text-[#4025aa]"> advanced architectures</span>.
               </MaskContainer>
             </div>
@@ -414,7 +465,9 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
           <Footer />
         </main>
         <ChatbotWidget />
-      </div>
+        <ShareSidebar />
+
+      </div>  
     </>
   );
 }
