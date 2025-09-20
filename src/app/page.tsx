@@ -121,9 +121,6 @@ function ShareSidebar() {
 }
 
 export default function Home() {
-
-   const [open, setOpen] = useState(false);
-
   useLenis({ lerp: 0.07 });
   const [navOpen, setNavOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -166,21 +163,17 @@ export default function Home() {
     }
   }, []);
 
-  
-
-const { ref: missionRef, isVisible: missionVisible } = useInView({ threshold: 0.2 });
-const { ref: credsRef, isVisible: credsVisible } = useInView({ threshold: 0.2 });
-const { ref: pricingRef, isVisible: pricingVisible } = useInView({ threshold: 0.2 });
-const { ref: usersRef, isVisible: usersVisible } = useInView({ threshold: 0.2 });
-const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ threshold: 0.2 });
-
+  const { ref: missionRef, isVisible: missionVisible } = useInView({ threshold: 0.2 });
+  const { ref: credsRef, isVisible: credsVisible } = useInView({ threshold: 0.2 });
+  const { ref: pricingRef, isVisible: pricingVisible } = useInView({ threshold: 0.2 });
+  const { ref: usersRef, isVisible: usersVisible } = useInView({ threshold: 0.2 });
+  const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ threshold: 0.2 });
 
   return (
     <>
       <TopProgress />
       <div className="min-h-screen w-full bg-black">
         <main className="relative z-10">
-         
           {/* Animated Infobar */}
           <div className="w-full bg-[#4025aa] text-white text-center text-sm py-3 overflow-hidden">
             <p className="animate-marquee whitespace-nowrap">
@@ -192,15 +185,15 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
           </div>
           {/* Navbar */}
           <nav className="sticky top-0 w-full bg-black/80 border-b border-white/10 px-8 py-4 flex items-center justify-between z-50 backdrop-blur">
-            <span className="flex items-center text-white font-bold text-4xl pl-15">
+            <span className="flex items-center text-white font-bold text-3xl pl-15">
               <Image
                 src="/logo.png"
-                alt="GoRecycle Logo"
+                alt="LETHE Logo"
                 width={40}
                 height={40}
                 className="mr-3 rounded-full"
               />
-              <Link href="/">Leth<span className="italic">e</span></Link>
+              <a href="/" className="italic">LETHE</a>
             </span>
             {/* Hamburger for small screens */}
             <button
@@ -214,7 +207,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
             </button>
             {/* Navbar links for desktop */}
             <div className="hidden md:flex items-center gap-6 pr-20 relative">
-              <Link href="#" className="text-white hover:text-indigo-400 transition"></Link>
+              <a href="#" className="text-white hover:text-indigo-400 transition"></a>
               {/* Dropdown for Services */}
               <div className="relative group">
                 <button
@@ -226,59 +219,16 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {/* Adjusted positioning: anchor directly below the button to avoid hover gaps */}
-                <div className="absolute left-0 top-full mt-0 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50 transform translate-y-1">
-                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</Link>
-                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</Link>
-                  <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</Link>
+                <div className="absolute left-0 mt-2 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50">
+                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</a>
+                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</a>
+                  <a href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</a>
                 </div>
               </div>
-              <div className="relative group text-white hover:text-indigo-400 transition">
-                <button
-                  className="text-white hover:text-indigo-400 transition flex items-center focus:outline-none"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  tabIndex={0}
-                >
-                  Partners
-                  <svg
-                    className="w-4 h-4 ml-1"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {/* Dropdown content (still uses Link for anchor items) */}
-                <div className="absolute left-0 top-full mt-0 w-[420px] bg-black border border-white/10 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity duration-200 z-50 p-6 grid grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">Why partner with us</h4>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">
-                      Partner Ecosystem
-                    </Link>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">Alliance Partners</h4>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Technology Alliance</Link>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">Become a Partner</h4>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Global Partner Program</Link>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">ITAD Program</Link>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Mobile Processors</Link>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">Already a partner?</h4>
-                    <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Login Portal</Link>
-                  </div>
-                </div>
-              </div>
-              <Link href="#" className="text-white hover:text-indigo-400 transition">Blog</Link>
-              <Link href="/Doc" className="text-white hover:text-indigo-400 transition">Docs</Link>
-              <Link href="#" className="text-white hover:text-indigo-400 transition">Contact</Link>
+              <a href="#" className="text-white hover:text-indigo-400 transition">Partners</a>
+              <a href="#" className="text-white hover:text-indigo-400 transition">Blog</a>
+              <a href="#" className="text-white hover:text-indigo-400 transition">Docs</a>
+              <a href="#" className="text-white hover:text-indigo-400 transition">Contact</a>
               <Link
                 href="/download"
                 className="ml-4 bg-[#4025aa] text-white font-semibold px-5 py-2 rounded transition"
@@ -302,21 +252,38 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
+                    {/* Dropdown content (still uses Link for anchor items) */}
                     {mobileServicesOpen && (
-                      <div className="mt-2 min-w-[160px] bg-black border border-white/10 rounded-lg shadow-lg">
-                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-t-lg transition">Data Shredding</Link>
-                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 transition">E-Waste Recycling</Link>
-                        <Link href="#" className="block px-4 py-2 text-white hover:bg-indigo-600 rounded-b-lg transition">Secure Pickup</Link>
+                      <div className="absolute left-0 top-full mt-0 w-[420px] bg-black border border-white/10 rounded-lg shadow-lg transition-opacity duration-200 z-50 p-6 grid grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="text-white font-semibold mb-2">Why partner with us</h4>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">
+                            Partner Ecosystem
+                          </Link>
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold mb-2">Alliance Partners</h4>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Technology Alliance</Link>
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold mb-2">Become a Partner</h4>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Global Partner Program</Link>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">ITAD Program</Link>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Mobile Processors</Link>
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold mb-2">Already a partner?</h4>
+                          <Link href="#" className="block text-gray-300 hover:text-indigo-400 transition">Login Portal</Link>
+                        </div>
                       </div>
                     )}
                   </div>
-                  <Link href="#" className="text-white hover:text-indigo-400 transition">Partners</Link>
                   <Link href="#" className="text-white hover:text-indigo-400 transition">Blog</Link>
                   <Link href="/Doc" className="text-white hover:text-indigo-400 transition">Docs</Link>
                   <Link href="#" className="text-white hover:text-indigo-400 transition">Contact</Link>
                   <Link
                     href="/download"
-                    className="bg-[#4025aa] text-white font-semibold px-5 py-2 rounded transition mt-2"
+                    className="ml-4 bg-[#4025aa] text-white font-semibold px-5 py-2 rounded transition"
                   >
                     Download
                   </Link>
@@ -324,6 +291,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
               </div>
             )}
           </nav>
+
           <div className="flex items-center justify-start pl-10 gap-10 mt-10 px-8 flex-col-reverse md:flex-row md:items-center md:justify-center md:pl-15 md:gap-10">
             <div className="flex justify-start w-full md:w-auto">
               <video
@@ -336,7 +304,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
                 playsInline
               />
             </div>
-             <div className="hidden md:flex h-[40rem] w-full flex-col items-centre justify-centre overflow-hidden cursor-none">
+            <div className="hidden md:flex h-[40rem] w-full flex-col items-centre justify-centre overflow-hidden cursor-none">
               <MaskContainer
                 revealText={
                   <p className="mx-auto max-w-4xl text-center text-4xl font-bold text-slate-800 dark:text-white bg-transparent">
@@ -353,33 +321,14 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
             </div>
           </div>
           {/* About Section */}
-          <section
-  ref={missionRef}
-  className={`w-full max-w-5xl mx-auto mt-20 px-8 py-12 bg-black/80 rounded-2xl shadow-lg flex-col md:flex-row gap-8 transition-all duration-1000 ease-out
-  ${missionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
->
-            <div className="flex-1">
+          <section className="w-full max-w-5xl mx-auto mt-20 px-8 py-12 bg-black/80 rounded-2xl shadow-lg flex flex-col md:flex-row gap-8 transition-opacity">
+            <div className="flex-1 flex flex-col justify-center">
               <h2 className="text-5xl italic font-bold text-white mb-4">Mission</h2>
               <p className="text-lg text-gray-200 mb-2">
-                Lethe's mission is to make secure, transparent, and eco-friendly data wiping accessible to everyone. We empower individuals, organizations, and recyclers with a simple, one-click solution that permanently erases sensitive data, generates tamper-proof proof-of-erasure certificates, and supports responsible IT asset recycling. By combining strong cryptography with user-friendly design, we aim to build trust, prevent data misuse, and accelerate a sustainable circular economy.
+                LETHE's mission is to make secure, transparent, and eco-friendly data wiping accessible to everyone. We empower individuals, organizations, and recyclers with a simple, one-click solution that permanently erases sensitive data, generates tamper-proof proof-of-erasure certificates, and supports responsible IT asset recycling. By combining strong cryptography with user-friendly design, we aim to build trust, prevent data misuse, and accelerate a sustainable circular economy.
               </p>
-              <p className="text-md text-gray-400">
-                Clean drives, fresh starts — because every byte deserves a second life.
-              </p>
-              <Link
-                href="#"
-                className="inline-block mt-6 text-indigo-400 hover:underline text-lg font-medium"
-              >
-                Our Solution →
-              </Link>
-              <Link
-                href="#"
-                className="inline-block mt-6 ml-9 text-indigo-400 hover:underline text-lg font-medium"
-              >
-                Learn more →
-              </Link>
             </div>
-            <div className="flex-shrink-0 flex items-end justify-end">
+            <div className="flex-1 flex flex-col justify-center">
               <Image
                 src="/mission.png"
                 alt="Our Mission"
@@ -389,27 +338,36 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
               />
             </div>
           </section>
+          {/* Mission tagline and links below the image/text */}
+          <section className="w-full max-w-5xl mx-auto px-8 mt-4 flex flex-col items-center">
+            <p className="text-md text-gray-400 mb-2 text-center">
+              Clean drives, fresh starts — because every byte deserves a second life.
+            </p>
+            <div className="flex gap-8 mt-2">
+              <a
+                href="#"
+                className="inline-block text-indigo-400 hover:underline text-lg font-medium"
+              >
+                Our Solution →
+              </a>
+              <a
+                href="#"
+                className="inline-block text-indigo-400 hover:underline text-lg font-medium"
+              >
+                Learn more →
+              </a>
+            </div>
+          </section>
           {/* Credentials Section */}
-          <section
-            ref={credsRef}
-            className={`w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end transition-all duration-1000 ease-out
-            ${credsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-          >
+          <section className="w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end">
             <Credentials />
           </section>
           {/* Plans Section */}
-          <section 
-            ref={pricingRef}
-            className={`w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end transition-all duration-1000 ease-out
-            ${pricingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+          <section className="w-full max-w-5xl mx-auto mt-24 mb-24 px-8 items-end">
             <Pricing />
           </section>
-          <section 
-            ref={usersRef}
-            className={`w-full max-w-7xl mx-auto mb-34 px-8 flex flex-col items-end transition-all duration-1000 ease-out
-            ${usersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-          >
-            <h2 className="text-5xl font-bold text-white mb-30">
+          <section className="w-full max-w-7xl mx-auto mb-34 px-8 flex flex-col items-end">
+            <h2 className="text-5xl font-bold text-white mb-30 text-center w-full">
               Trusted <span className="italic">Users</span>
             </h2>
             <LogoLoop
@@ -424,28 +382,11 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
               fadeOutColor="black"
               ariaLabel="Technology partners"
             />
-            <div className="h-20" /> {/* Spacer */}
-            <LogoLoop
-              logos={sndLoops}
-              speed={120}
-              direction="right"
-              logoHeight={98}
-              gap={120}
-              pauseOnHover={false}
-              scaleOnHover={false}
-              fadeOut={true}
-              fadeOutColor="black"
-              ariaLabel="Technology partners"
-            />
           </section>
           {/* USP Section */}
-          <section 
-            ref={transparencyRef}
-            className={`w-full max-w-5xl mx-auto mt-34 mb-24 px-8 flex flex-col items-start transition-all duration-1000 ease-out
-            ${transparencyVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-            >
-            <h2 className="text-5xl font-bold text-white mb-8 ml-0">
-              Transparency
+          <section className="w-full max-w-5xl mx-auto mt-34 mb-24 px-8 flex flex-col items-start">
+            <h2 className="text-5xl font-bold text-white italic mb-8 ml-0">
+              Features <span className="italic">we</span> offer
             </h2>
             <div className="flex justify-center items-center w-full">
               <MagicBento
@@ -466,13 +407,7 @@ const { ref: transparencyRef, isVisible: transparencyVisible } = useInView({ thr
         </main>
         <ChatbotWidget />
         <ShareSidebar />
-
-      </div>  
+      </div>
     </>
   );
 }
-
-
-
-
-
